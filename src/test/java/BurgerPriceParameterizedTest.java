@@ -1,15 +1,14 @@
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import praktikum.Bun;
 import praktikum.Burger;
-import praktikum.Ingredient;
-import praktikum.IngredientType;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
 @RunWith(Parameterized.class)
-public class BurgerPriceParameterizedTest {
+public class BurgerPriceParameterizedTest extends BaseBurgerTest {
 
     private final float bunPrice;
     private final float ingredientPrice;
@@ -19,6 +18,12 @@ public class BurgerPriceParameterizedTest {
         this.bunPrice = bunPrice;
         this.ingredientPrice = ingredientPrice;
         this.expected = expected;
+    }
+
+    @Before
+    public void setUpStubs() {
+        when(bun.getPrice()).thenReturn(bunPrice);
+        when(sauce.getPrice()).thenReturn(ingredientPrice);
     }
 
     @Parameterized.Parameters(name = "Цена булки {0}, Цена ингредиента {1}")
@@ -32,12 +37,9 @@ public class BurgerPriceParameterizedTest {
 
     @Test
     public void priceTest() {
-        Bun bun = new Bun("Розовая", bunPrice);
-        Ingredient ingredient = new Ingredient(IngredientType.SAUCE, "Сырный", ingredientPrice);
-
         Burger burger = new Burger();
         burger.setBuns(bun);
-        burger.addIngredient(ingredient);
+        burger.addIngredient(sauce);
 
         assertEquals(expected, burger.getPrice(), 0.001);
     }
