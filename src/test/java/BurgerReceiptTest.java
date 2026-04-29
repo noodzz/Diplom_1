@@ -1,37 +1,41 @@
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-import praktikum.Bun;
 import praktikum.Burger;
-import praktikum.Ingredient;
 import praktikum.IngredientType;
 
 import static org.junit.Assert.assertTrue;
 
-@RunWith(MockitoJUnitRunner.class)
-public class BurgerReceiptTest {
+public class BurgerReceiptTest extends BaseBurgerTest {
 
-    @Mock
-    Bun bun;
-    @Mock
-    Ingredient ingredient;
-
-    @Test
-    public void getReceiptTest() {
+    private Burger buildBurger() {
         Mockito.when(bun.getName()).thenReturn("Розовая");
-        Mockito.when(ingredient.getName()).thenReturn("Котлета");
-        Mockito.when(ingredient.getType()).thenReturn(IngredientType.FILLING);
+        Mockito.when(filling.getName()).thenReturn("Котлета");
+        Mockito.when(filling.getType()).thenReturn(IngredientType.FILLING);
 
         Burger burger = new Burger();
-        burger.addIngredient(ingredient);
+        burger.addIngredient(filling);
         burger.setBuns(bun);
+        return burger;
+    }
 
-        String receipt = burger.getReceipt();
+    @Test
+    public void receiptShouldStartWithBunTest() {
+        String receipt = buildBurger().getReceipt();
 
         assertTrue(receipt.startsWith("(==== Розовая ===="));
+    }
+
+    @Test
+    public void receiptShouldContainIngredientTest() {
+        String receipt = buildBurger().getReceipt();
+
         assertTrue(receipt.contains("= filling Котлета ="));
+    }
+
+    @Test
+    public void receiptShouldContainPriceTest() {
+        String receipt = buildBurger().getReceipt();
+
         assertTrue(receipt.contains("Price:"));
     }
 }
