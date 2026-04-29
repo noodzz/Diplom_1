@@ -1,19 +1,22 @@
 import org.junit.Before;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import praktikum.Bun;
 import praktikum.Ingredient;
-import praktikum.IngredientType;
 
 public class BaseBurgerTest {
 
+    @Mock
     protected Bun bun;
+
+    @Mock
     protected Ingredient sauce;
+
+    @Mock
     protected Ingredient filling;
 
     @Before
     public void setUp() {
-        bun = new Bun("Розовая", 100);
-
-        sauce = new Ingredient(IngredientType.SAUCE, "Сырный", 50);
-        filling = new Ingredient(IngredientType.FILLING, "Котлета", 200);
+        MockitoAnnotations.openMocks(this);
     }
 }
